@@ -1,102 +1,625 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>BISC | Swiss-made Bitcoin Eigenverwahrung</title>
     <link rel="icon" type="image/png" href="BISC Logo.png">
+    
+    <!-- Load Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bisc: {
+                            bg: '#0a192f',
+                            gold: '#d4af37',
+                            darkgold: '#b5952f',
+                            panel: '#112240',
+                            panelHover: '#1a365d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'gold': '0 4px 20px -2px rgba(212, 175, 55, 0.15)',
+                        'gold-lg': '0 10px 30px -5px rgba(212, 175, 55, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #f97316;
-            --accent-hover: #ea580c;
-        }
+        /* Custom Styles for fancy elements and smooth animations */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            background-color: #0a192f;
+            color: #d4af37; /* Hauptschriftfarbe wie gefordert */
+            overflow-x: hidden;
         }
-        container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-            display: block;
+
+        /* Subtler text color for readable body paragraphs, still tinted gold */
+        p, .text-muted {
+            color: rgba(212, 175, 55, 0.85); 
         }
-        header { border-bottom: 1px solid #334155; padding-bottom: 2rem; margin-bottom: 2rem; }
-        h1 { font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem; }
-        h2 { font-size: 1.8rem; color: var(--accent); margin-top: 2.5rem; }
-        .hero-sub { font-size: 1.2rem; color: var(--text-muted); }
-        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent); margin: 1rem 0; }
-        .btn { display: inline-block; background: var(--accent); color: #fff; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 1rem; }
-        .btn:hover { background: var(--accent-hover); }
-        .disclaimer { background: #111827; padding: 1rem; border-radius: 6px; font-size: 0.9rem; color: var(--text-muted); border: 1px solid #374151; margin-top: 2rem; }
-        footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #334155; font-size: 0.85rem; color: var(--text-muted); }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+
+        /* Abstract Background Elements inspired by the LinkedIn Banner */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.03), transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.02), transparent 50%);
+        }
+        
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.5), -5px -5px 20px rgba(212,175,55,0.05);
+            transform-origin: center;
+        }
+
+        .shape-1 { width: 120vw; height: 40vh; top: -10vh; left: -10vw; transform: rotate(-8deg); z-index: -2; }
+        .shape-2 { width: 80vw; height: 50vh; bottom: -20vh; right: -10vw; transform: rotate(15deg); z-index: -2; background: linear-gradient(135deg, #0d1f3b 0%, #081426 100%); }
+
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(17, 34, 64, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .glass-nav {
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #d4af37, #fdf5e6, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Dropdown Menu Setup */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #112240;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            z-index: 50;
+            border-radius: 0.5rem;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover { background-color: rgba(212, 175, 55, 0.1); }
+
+        /* Fade-in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Table Styles */
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid rgba(212, 175, 55, 0.2); padding: 1rem; text-align: center; }
+        th { background: rgba(212, 175, 55, 0.05); font-weight: 600; color: #d4af37; }
+        td:first-child { text-align: left; font-weight: 500; }
+        tr:hover td { background: rgba(212, 175, 55, 0.02); }
     </style>
 </head>
-<body>
-    <container>
-    
-        <header>
-            <h1>Sichere Bitcoin Eigenverwahrung & Nachlasskonzeption</h1>
-            <p class="hero-sub">Schlafen Sie ruhig, während Ihre Bitcoin sicher sind. Professionelle Begleitung in die fehlerfreie Selbstverwahrung – ohne Risiko.</p>
-        </header>
+<body class="antialiased selection:bg-bisc-gold selection:text-bisc-bg">
 
-      
-        <section>
-            <h2>Das Problem</h2>
-            <p>Die Hardware-Wallet liegt in der Schublade? Die Angst, der "Single Point of Failure" zu sein, blockiert Sie? Das ist rational. Ohne strukturierte Prozesse führen Fehler beim Backup schnell zum Totalverlust. Ich helfe Ihnen, diese Unsicherheit methodisch zu eliminieren.</p>
-        </section>
+    <!-- Background Decor -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
 
-       
-        <section>
-            <h2>Die Sicherheits-Garantie</h2>
-            <div class="card">
-                <strong>Ich sehe niemals Ihre Private Keys.</strong> Das etablierte 4-Augen-Prinzip garantiert Ihnen die volle Souveränität. Es findet zu keinem Zeitpunkt eine Verwahrung (Custody), Verwaltung oder das Handling von Kundengeldern oder Ihren kryptografischen Schlüsseln statt. Sie behalten 100% Kontrolle.
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-3 group">
+                        <img class="h-10 w-auto group-hover:scale-105 transition-transform duration-300" src="BISC Logo.png" alt="BISC Logo" onerror="this.src='https://placehold.co/100x40/0a192f/d4af37?text=BISC+Logo'">
+                        <span class="font-serif text-xl tracking-wider font-semibold group-hover:text-white transition-colors duration-300">BISC Advisory</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#" class="hover:text-white transition-colors duration-300 text-sm tracking-wide font-medium">Home</a>
+                    <a href="#loesung" class="hover:text-white transition-colors duration-300 text-sm tracking-wide font-medium">Dienstleistungen</a>
+                    <a href="#nachlass" class="hover:text-white transition-colors duration-300 text-sm tracking-wide font-medium">Nachlassplanung</a>
+                    
+                    <!-- Dropdown -->
+                    <div class="dropdown relative py-4">
+                        <button class="hover:text-white transition-colors duration-300 text-sm tracking-wide font-medium flex items-center gap-1">
+                            Wissen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-content mt-[-0.5rem] py-2 overflow-hidden">
+                            <a href="#" class="block px-4 py-3 text-sm transition-colors duration-200">Wissensdatenbank</a>
+                            <a href="steel-wallet.html" class="block px-4 py-3 text-sm transition-colors duration-200">Steel Wallets</a>
+                            <a href="#" class="block px-4 py-3 text-sm transition-colors duration-200">Bedrohungsmodelle</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#kontakt" class="px-5 py-2 border border-bisc-gold rounded-full hover:bg-bisc-gold hover:text-bisc-bg transition-all duration-300 text-sm font-semibold tracking-wide">Kontakt</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-bisc-gold hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </section>
-
-   
-        <section>
-            <h2>Dienstleistungen</h2>
-            <ul>
-                <li><strong>Self-Custody Onboarding:</strong> Fehlerfreie Einrichtung von Hardware-Wallets.</li>
-                <li><strong>Physische Backup-Konzepte:</strong> Krisensichere Verwahrung jenseits von Papier. (<a href="steel-wallet.html">Warum eine Steel-Wallet essenziell ist</a>)</li>
-                <li><strong>Nachlasskonzeption:</strong> Strukturierte, sichere Vererbungskonzepte für die nächste Generation, ohne Sicherheitsrisiken in der Gegenwart.</li>
-            </ul>
-        </section>
-
-       
-        <section>
-            <h2>Zahlungsinformationen</h2>
-            <p>Honorare werden transparent in CHF kalkuliert. Die Akzeptanz von Bitcoin und Bitcoin Lightning erfolgt ausschliesslich als direktes Zahlungsmittel für persönlich identifizierte Kunden zur Begleichung von erbrachten Beratungs- und Schulungshonoraren (Closed-Loop-Verfahren).</p>
-        </section>
-
-       
-        <section>
-            <h2>Sicherheits-Check anfordern</h2>
-            <p>Analysieren Sie Ihr aktuelles Setup in 2 Minuten. Identifizieren Sie potenzielle Schwachstellen in Ihrer Aufbewahrungs- oder Nachlassstrategie.</p>
-            <a href="https://forms.gle/PcC6rMTctV2gYACD7" target="_blank" rel="noopener noreferrer" class="btn">Kostenfreie Risiko-Analyse starten</a>
-        </section>
-
-     
-        <div class="disclaimer">
-            <strong>Regulatorischer Hinweis:</strong> Keine Finanzleitung, Vermögensverwaltung oder Anlageberatung im Sinne des FIDLEG. Keine Finanzallokation, kein Krypto-Handel (Exchange) und keine Verwahrung digitaler Vermögenswerte für Dritte.
         </div>
+        
+        <!-- Mobile Menu Panel (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-bisc-gold/20">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-bisc-gold/10">Home</a>
+                <a href="#loesung" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-bisc-gold/10">Dienstleistungen</a>
+                <a href="#nachlass" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-bisc-gold/10">Nachlassplanung</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-bisc-gold/10">Wissen (Steel Wallets)</a>
+                <a href="#kontakt" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-bisc-gold/10">Kontakt</a>
+            </div>
+        </div>
+    </nav>
 
-      
-        <footer>
-            <p><strong>Impressum:</strong> BISC Advisory, Dorfstrasse 7, 8422 Pfungen, Schweiz. Kontakt: info@bisc-advisory.com.</p>
-            <p><strong>Datenschutz:</strong> Diese Webseite nutzt keine Tracking-Cookies und speichert keine personenbezogenen Daten. Anfragen über verschlüsselte Kommunikationswege (Signal / ProtonMail) werden vertraulich behandelt.</p>
-        </footer>
-    </container>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden px-4">
+        <div class="max-w-4xl mx-auto text-center fade-in">
+            <div class="inline-block mb-4 px-3 py-1 rounded-full border border-bisc-gold/30 bg-bisc-gold/5 text-xs font-semibold tracking-widest uppercase">
+                Bitcoin Inheritance & Self-Custody
+            </div>
+            <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+                SECURE YOUR <br />
+                <span class="text-gradient">LEGACY</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-muted mb-10 max-w-3xl mx-auto font-light leading-relaxed">
+                Diskrete Bitcoin-Verwahrungs- und Nachlassberatung für Privatpersonen. Brückenschlag zwischen technologischer Souveränität und erstklassiger Sicherheit.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="https://forms.gle/PcC6rMTctV2gYACD7" target="_blank" rel="noopener noreferrer" 
+                   class="bg-bisc-gold text-bisc-bg px-8 py-4 rounded-md font-bold text-lg hover:bg-bisc-darkgold hover:shadow-gold transition-all duration-300 w-full sm:w-auto">
+                    Kostenfreie Risiko-Analyse
+                </a>
+                <a href="#problem" class="px-8 py-4 rounded-md font-bold text-lg border border-bisc-gold hover:bg-bisc-gold/10 transition-all duration-300 w-full sm:w-auto">
+                    Mehr erfahren
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Das Problem (Status Quo) -->
+    <section id="problem" class="py-20 bg-bisc-bg/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Der Status Quo: Vertrauen & Angst</h2>
+                <div class="h-1 w-20 bg-bisc-gold mx-auto mb-6 rounded-full"></div>
+                <p class="max-w-2xl mx-auto text-muted text-lg">
+                    Immer mehr private und institutionelle Anleger ziehen Kapital von zentralisierten Börsen ab (über -233k BTC p.a.). Doch der Weg zur Souveränität ist oft von Unsicherheit geprägt.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 fade-in">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-full bg-bisc-gold/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-bisc-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Risiko: Custodial Storage</h3>
+                    <p class="text-muted leading-relaxed">
+                        Abhängigkeit von Drittanbietern, Insolvenzrisiken (z.B. FTX) und mangelnde Diskretion. Investoren lagern signifikante Werte auf Plattformen ohne echte Kontrolle. "Not your keys, not your Bitcoin."
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 border-l-4 border-l-bisc-gold">
+                    <div class="w-12 h-12 rounded-full bg-bisc-gold/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-bisc-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Barriere: Irreversibilität</h3>
+                    <p class="text-muted leading-relaxed">
+                        Die Hardware-Wallet liegt ungenutzt in der Schublade. Die Angst vor irreversiblen Fehlern und der "Single Point of Failure" zu sein, blockiert Sie. Wir helfen Ihnen, diese Unsicherheit methodisch zu eliminieren.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Unsere Lösung (Die drei Säulen) -->
+    <section id="loesung" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 fade-in">
+                <span class="uppercase tracking-widest text-sm font-semibold mb-2 block">Unser Ansatz</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Expertise trifft Empathie</h2>
+                <div class="h-1 w-20 bg-bisc-gold mx-auto mb-6 rounded-full"></div>
+                <p class="max-w-3xl mx-auto text-muted text-lg">
+                    BISC Advisory ist nicht nur technische Beratung, sondern eine strategische Partnerschaft. Wir übersetzen komplexe Technologie in handhabbare, sichere Prozesse.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+                <!-- Säule 1 -->
+                <div class="glass-panel p-8 rounded-xl text-center flex flex-col items-center group hover:bg-bisc-panel transition-colors duration-300">
+                    <div class="w-16 h-16 rounded-full bg-bisc-bg border border-bisc-gold flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-bisc-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Sicherheit</h3>
+                    <p class="text-muted text-sm">
+                        Onboarding auf Hardware-Wallets und physische Backup-Konzepte ohne Drittparteien-Risiko. Sie behalten 100% Kontrolle.
+                    </p>
+                </div>
+                <!-- Säule 2 -->
+                <div id="nachlass" class="glass-panel p-8 rounded-xl text-center flex flex-col items-center group hover:bg-bisc-panel transition-colors duration-300">
+                    <div class="w-16 h-16 rounded-full bg-bisc-bg border border-bisc-gold flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-bisc-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Vererbung</h3>
+                    <p class="text-muted text-sm">
+                        Sicherstellung des Vermögensübergangs an die nächste Generation ohne Wissensverlust und ohne Sicherheitsrisiken in der Gegenwart.
+                    </p>
+                </div>
+                <!-- Säule 3 -->
+                <div class="glass-panel p-8 rounded-xl text-center flex flex-col items-center group hover:bg-bisc-panel transition-colors duration-300">
+                    <div class="w-16 h-16 rounded-full bg-bisc-bg border border-bisc-gold flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-bisc-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Privatsphäre</h3>
+                    <p class="text-muted text-sm">
+                        Schutz sensibler Daten durch Offline-Backups und verschlüsselte Kommunikation. Wir sehen niemals Ihre Private Keys.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Die Garantie Callout -->
+            <div class="mt-12 max-w-4xl mx-auto glass-panel p-6 rounded-lg border-l-4 border-l-bisc-gold fade-in">
+                <p class="text-center font-medium">
+                    <strong class="text-white text-lg">Die BISC Sicherheits-Garantie:</strong><br>
+                    Das etablierte 4-Augen-Prinzip garantiert Ihnen die volle Souveränität. Es findet zu keinem Zeitpunkt eine Verwahrung (Custody), Verwaltung oder das Handling von Kundengeldern oder Ihren kryptografischen Schlüsseln statt.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Schutz gegen (Threat Model) -->
+    <section class="py-20 bg-bisc-bg/80 relative border-t border-b/20 border-bisc-gold/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Wir schützen Ihr Vermögen vor:</h2>
+                <div class="h-1 w-20 bg-bisc-gold mx-auto mb-6 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 fade-in">
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">🎣</span>
+                    <h4 class="font-bold mb-1">Phishing & Hacks</h4>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">🔑</span>
+                    <h4 class="font-bold mb-1">Verlust des Private Keys</h4>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">🧠</span>
+                    <h4 class="font-bold mb-1">Dem menschlichen Faktor</h4>
+                    <p class="text-xs text-muted mt-1">(Vergessen von Passwörtern)</p>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">🥷</span>
+                    <h4 class="font-bold mb-1">Einbruch & Diebstahl</h4>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">👁️</span>
+                    <h4 class="font-bold mb-1">Unbefugtem Zugriff</h4>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">⚔️</span>
+                    <h4 class="font-bold mb-1">Gewaltandrohung</h4>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center">
+                    <span class="text-3xl mb-3">🚨</span>
+                    <h4 class="font-bold mb-1">Sicherheitsleaks</h4>
+                    <p class="text-xs text-muted mt-1">(z.B. KYC Dienstleister Hacks)</p>
+                </div>
+                <div class="glass-panel p-5 rounded-lg flex flex-col items-center text-center border-bisc-gold border">
+                    <span class="text-3xl mb-3">🏢</span>
+                    <h4 class="font-bold mb-1">Plattform-Insolvenz</h4>
+                    <p class="text-xs text-muted mt-1">Vollständige Unabhängigkeit</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Tabellen-Vergleich -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Warum BISC Multi-Sig überlegen ist</h2>
+                <div class="h-1 w-20 bg-bisc-gold mx-auto mb-6 rounded-full"></div>
+                <p class="max-w-2xl mx-auto text-muted">Ein direkter Vergleich gängiger Aufbewahrungsmethoden für signifikante Vermögenswerte.</p>
+            </div>
+
+            <div class="overflow-x-auto fade-in glass-panel rounded-xl">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr>
+                            <th class="p-4 w-1/3">Kategorie</th>
+                            <th class="p-4 text-center bg-bisc-gold/10 border-bisc-gold/50 text-white"><span class="flex flex-col items-center">Multi-Sig mit BISC <span class="text-xs font-normal text-bisc-gold mt-1">Premium Standard</span></span></th>
+                            <th class="p-4 text-center">Single-Sig<br><span class="text-xs font-normal text-muted">Self Custody</span></th>
+                            <th class="p-4 text-center">Exchange<br><span class="text-xs font-normal text-muted">Börse</span></th>
+                            <th class="p-4 text-center">ETF<br><span class="text-xs font-normal text-muted">Finanzprodukt</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sicherheitsrelevante Signaturen</td>
+                            <td class="text-center font-bold text-white bg-bisc-gold/5">2 oder mehr</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        <tr>
+                            <td>Echte Souveränität (Eigener Key)</td>
+                            <td class="text-center text-green-400 bg-bisc-gold/5">✔ Ja</td>
+                            <td class="text-center text-green-400">✔ Ja</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                        </tr>
+                        <tr>
+                            <td>Schutz vor "Single Point of Failure"</td>
+                            <td class="text-center text-green-400 bg-bisc-gold/5">✔ Ja</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                        </tr>
+                        <tr>
+                            <td>Geschützt vor Plattform-Insolvenz</td>
+                            <td class="text-center text-green-400 bg-bisc-gold/5">✔ Ja</td>
+                            <td class="text-center text-green-400">✔ Ja</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                            <td class="text-center text-yellow-400">~ Emittentenrisiko</td>
+                        </tr>
+                        <tr>
+                            <td>Sicher gegen physische Erpressung</td>
+                            <td class="text-center text-green-400 bg-bisc-gold/5">✔ Ja <span class="block text-xs text-muted">(Verteilte Keys)</span></td>
+                            <td class="text-center text-red-400">✘ Nein <span class="block text-xs text-muted">(1 Key reicht)</span></td>
+                            <td class="text-center text-yellow-400">~ Teils</td>
+                            <td class="text-center text-green-400">✔ Ja</td>
+                        </tr>
+                        <tr>
+                            <td>Nachlassfähigkeit ohne Drittrisiko</td>
+                            <td class="text-center text-green-400 bg-bisc-gold/5">✔ Ja <span class="block text-xs text-muted">(Strukturiert)</span></td>
+                            <td class="text-center text-yellow-400">~ Komplex</td>
+                            <td class="text-center text-red-400">✘ Nein</td>
+                            <td class="text-center text-yellow-400">~ Nur Fiat-Wert</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Der Prozess -->
+    <section class="py-20 bg-bisc-bg/50 relative border-t border-bisc-gold/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Das begleitete Sicherheits-Framework</h2>
+                <div class="h-1 w-20 bg-bisc-gold mx-auto mb-6 rounded-full"></div>
+                <p class="max-w-2xl mx-auto text-muted">In Kooperation mit erstklassigen Hardware- und Steel-Wallet-Anbietern schaffen wir eine lückenlose Sicherheitskette. Wir nehmen die Angst vor der Unwiderruflichkeit.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative fade-in">
+                <!-- Connecting Line for Desktop -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-bisc-gold/20 -z-10 transform -translate-y-1/2"></div>
+                
+                <!-- Step 1 -->
+                <div class="glass-panel p-6 rounded-xl text-center relative">
+                    <div class="w-10 h-10 rounded-full bg-bisc-gold text-bisc-bg font-bold flex items-center justify-center mx-auto mb-4 relative z-10 shadow-gold">1</div>
+                    <h4 class="font-bold text-lg mb-2">Strategie</h4>
+                    <p class="text-sm text-muted">Bedarfsanalyse & individuelle Bedrohungsmodellierung.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="glass-panel p-6 rounded-xl text-center relative">
+                    <div class="w-10 h-10 rounded-full bg-bisc-gold text-bisc-bg font-bold flex items-center justify-center mx-auto mb-4 relative z-10 shadow-gold">2</div>
+                    <h4 class="font-bold text-lg mb-2">Beschaffung</h4>
+                    <p class="text-sm text-muted">Sicherer Direktkauf versiegelter Hardware durch Sie als Kunden.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="glass-panel p-6 rounded-xl text-center relative border-b-2 md:border-b-0 md:border-b-bisc-gold border-bisc-gold shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+                    <div class="w-10 h-10 rounded-full bg-bisc-gold text-bisc-bg font-bold flex items-center justify-center mx-auto mb-4 relative z-10 shadow-gold">3</div>
+                    <h4 class="font-bold text-lg mb-2">Implementierung</h4>
+                    <p class="text-sm text-muted">Geführtes, fehlerfreies Setup & physische Backup-Erstellung (Steel Wallets).</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="glass-panel p-6 rounded-xl text-center relative">
+                    <div class="w-10 h-10 rounded-full bg-bisc-gold text-bisc-bg font-bold flex items-center justify-center mx-auto mb-4 relative z-10 shadow-gold">4</div>
+                    <h4 class="font-bold text-lg mb-2">Validierung</h4>
+                    <p class="text-sm text-muted">Durchführung von Restore-Tests & Ernstfall-/Erbe-Simulation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Service Tiers -->
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+                <div class="glass-panel p-8 rounded-xl flex flex-col">
+                    <h3 class="text-2xl font-serif font-bold mb-2">BISC Standard</h3>
+                    <p class="text-sm text-muted mb-6">Für Retail & Casual Investors</p>
+                    <ul class="space-y-3 mb-8 flex-grow text-sm">
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Security Basics</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Remote Setup</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Skalierbare Prozesse</li>
+                    </ul>
+                    <a href="#kontakt" class="block text-center w-full py-3 border border-bisc-gold rounded-md hover:bg-bisc-gold/10 transition-colors">Anfragen</a>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl flex flex-col border border-bisc-gold relative transform md:-translate-y-4 shadow-gold-lg">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bisc-gold text-bisc-bg px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                        Empfohlen
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold mb-2 text-white">BISC Advisory</h3>
+                    <p class="text-sm text-muted mb-6">HNWI & Family Offices</p>
+                    <ul class="space-y-3 mb-8 flex-grow text-sm">
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Inheritance & Sovereignty Fokus</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Exklusives Face-to-Face Onboarding</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Individuelle Nachlasskonzeption</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Höchste Diskretion</li>
+                    </ul>
+                    <a href="https://forms.gle/PcC6rMTctV2gYACD7" target="_blank" rel="noopener noreferrer" class="block text-center w-full py-3 bg-bisc-gold text-bisc-bg font-bold rounded-md hover:bg-bisc-darkgold transition-colors">Risiko-Analyse starten</a>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl flex flex-col">
+                    <h3 class="text-2xl font-serif font-bold mb-2">BISC Corporate</h3>
+                    <p class="text-sm text-muted mb-6">Für KMUs & Unternehmen</p>
+                    <ul class="space-y-3 mb-8 flex-grow text-sm">
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Multi-Sig & Audit Setups</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Holistic Implementation</li>
+                        <li class="flex items-start"><span class="text-bisc-gold mr-2">✔</span> Treasury Management Basics</li>
+                    </ul>
+                    <a href="#kontakt" class="block text-center w-full py-3 border border-bisc-gold rounded-md hover:bg-bisc-gold/10 transition-colors">Anfragen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Zahlungen & Kontakt -->
+    <section id="kontakt" class="py-20 bg-bisc-bg/80 relative border-t border-bisc-gold/10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+            <h2 class="text-3xl font-serif font-bold mb-6">Lassen Sie uns den Standard für Sicherheit setzen.</h2>
+            <p class="text-muted mb-8 text-lg">Analysieren Sie Ihr aktuelles Setup in 2 Minuten. Identifizieren Sie potenzielle Schwachstellen in Ihrer Aufbewahrungs- oder Nachlassstrategie.</p>
+            
+            <a href="mailto:info@bisc-advisory.com" class="inline-flex items-center justify-center gap-2 text-xl font-bold text-white hover:text-bisc-gold transition-colors mb-12">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                info@bisc-advisory.com
+            </a>
+
+	    <a href="mailto:b2b@bisc-advisory.com" class="inline-flex items-center justify-center gap-2 text-xl font-bold text-white hover:text-bisc-gold transition-colors mb-12">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                b2b@bisc-advisory.com
+            </a>
+
+            <div class="glass-panel p-6 rounded-lg text-left text-sm text-muted">
+                <h4 class="font-bold text-bisc-gold mb-2">Zahlungsinformationen</h4>
+                <p>Honorare werden transparent in CHF kalkuliert. Die Akzeptanz von Bitcoin und Bitcoin Lightning erfolgt ausschliesslich als direktes Zahlungsmittel für persönlich identifizierte Kunden zur Begleichung von erbrachten Beratungs- und Schulungshonoraren (Closed-Loop-Verfahren).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer mit Disclaimern (Compliance-wichtig) -->
+    <footer class="bg-[#060f1c] pt-12 pb-8 border-t border-bisc-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h5 class="text-bisc-gold font-bold mb-4">Regulatorischer Hinweis</h5>
+                    <p class="text-xs text-muted leading-relaxed text-justify">
+                        Keine Finanzleitung, Vermögensverwaltung oder Anlageberatung im Sinne des FIDLEG. BISC Advisory bietet ausschliesslich technologische Schulungen und methodische Prozessbegleitung an. Es findet keine Finanzallokation, kein Krypto-Handel (Exchange) und ausdrücklich keine Verwahrung (Custody) digitaler Vermögenswerte oder kryptografischer Schlüssel für Dritte statt.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-bisc-gold font-bold mb-4">Datenschutz & Diskretion</h5>
+                    <p class="text-xs text-muted leading-relaxed text-justify">
+                        Diese Webseite nutzt keine Tracking-Cookies und speichert keine personenbezogenen Daten. Anfragen über verschlüsselte Kommunikationswege (Signal / ProtonMail) werden vertraulich behandelt. Die Privatsphäre unserer Mandanten hat höchste Priorität.
+                    </p>
+                </div>
+            </div>
+            <div class="text-center border-t border-bisc-gold/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <img class="h-6 w-auto grayscale opacity-50" src="BISC Logo.png" alt="BISC" onerror="this.style.display='none'">
+                    <span class="text-xs text-muted">&copy; 2026 BISC Advisory. Alle Rechte vorbehalten.</span>
+                </div>
+                <div class="space-x-4 text-xs text-muted">
+                    <a href="#" class="hover:text-bisc-gold transition-colors">Impressum</a>
+                    <a href="#" class="hover:text-bisc-gold transition-colors">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Intersection Observer for fade-in animations on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Slight parallax effect for background shapes
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const shape1 = document.querySelector('.shape-1');
+            const shape2 = document.querySelector('.shape-2');
+            
+            if(shape1 && shape2) {
+                shape1.style.transform = `rotate(-8deg) translate(${x * 20}px, ${y * 20}px)`;
+                shape2.style.transform = `rotate(15deg) translate(${x * -30}px, ${y * -30}px)`;
+            }
+        });
+    </script>
 </body>
 </html>
